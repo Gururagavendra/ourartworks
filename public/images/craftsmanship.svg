@@ -1,0 +1,6 @@
+<svg width="456" height="456" viewBox="0 0 456 456" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="456" height="456" fill="#E5E5E5"/>
+  <rect x="128" y="128" width="200" height="200" rx="8" fill="#D4D4D4"/>
+  <text x="228" y="228" text-anchor="middle" fill="#888" font-family="system-ui" font-size="16">Craftsmanship</text>
+  <text x="228" y="250" text-anchor="middle" fill="#888" font-family="system-ui" font-size="12">Image</text>
+</svg>

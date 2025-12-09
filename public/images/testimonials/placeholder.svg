@@ -1,0 +1,6 @@
+<svg width="231" height="411" viewBox="0 0 231 411" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="231" height="411" fill="#C4C4C4"/>
+  <circle cx="115" cy="150" r="50" fill="#A0A0A0"/>
+  <text x="115" y="280" text-anchor="middle" fill="#666" font-family="system-ui" font-size="14">Customer</text>
+  <text x="115" y="300" text-anchor="middle" fill="#666" font-family="system-ui" font-size="14">Photo</text>
+</svg>
