@@ -7,9 +7,12 @@ export const metadata: Metadata = {
   keywords: ["photo frames", "custom frames", "handcrafted frames", "India", "Our Art Works"],
   authors: [{ name: "Our Art Works" }],
   icons: {
-    icon: "/images/logo.png",
-    shortcut: "/images/logo.png",
-    apple: "/images/logo.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: "Our Art Works - Custom Frames, Crafted for Your Moments",
