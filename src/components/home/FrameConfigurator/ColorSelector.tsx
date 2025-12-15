@@ -16,7 +16,7 @@ export default function ColorSelector({
   onSelect,
 }: ColorSelectorProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1.5">
       {colors.map((color) => {
         const isSelected = selectedColor?.id === color.id;
         const isWhite = color.hexCode.toLowerCase() === "#ffffff" || color.hexCode.toLowerCase() === "#fafafa";
@@ -26,9 +26,9 @@ export default function ColorSelector({
             key={color.id}
             onClick={() => onSelect(color)}
             className={cn(
-              "relative w-12 h-12 rounded-full transition-all duration-200",
-              "hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-              isSelected && "ring-2 ring-primary ring-offset-2",
+              "relative w-9 h-9 rounded-full transition-all duration-200",
+              "hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary",
+              isSelected && "ring-2 ring-primary ring-offset-1",
               isWhite && "border border-border"
             )}
             style={{ backgroundColor: color.hexCode }}
@@ -39,7 +39,7 @@ export default function ColorSelector({
             {isSelected && (
               <span className="absolute inset-0 flex items-center justify-center">
                 <Check
-                  size={20}
+                  size={14}
                   className={isWhite ? "text-primary" : "text-white"}
                   strokeWidth={3}
                 />

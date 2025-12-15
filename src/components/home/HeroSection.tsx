@@ -13,23 +13,22 @@ export default function HeroSection() {
         }}
       />
       
-      {/* Lighter overlay for better visibility while keeping image bright */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* Darker overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black/60" />
       
       {/* Content */}
-      <div className="relative z-10 text-center text-white max-w-[600px] px-5">
-        <h1 className="text-[54px] leading-none tracking-tight mb-4">OAW</h1>
-        <h2 className="text-[27px] font-normal tracking-wide mb-4">
+      <div className="relative z-10 text-center text-white max-w-[700px] px-5">
+        <h2 className="text-[24px] md:text-[32px] font-medium tracking-wide mb-4">
           Custom Frames, Crafted for Your Moments
         </h2>
-        <p className="text-[15px] text-white/80 mb-10 leading-relaxed">
+        <p className="text-[16px] text-white/80 mb-12 leading-relaxed">
           Premium handcrafted photo frames, customized to perfection. Made in India
           <br />with love.
         </p>
         <Button 
           variant="secondary" 
-          size="lg"
-          className="bg-white text-black hover:bg-white/90 px-8 py-4 border-0"
+          size=""
+          className="bg-white text-black font-semibold hover:bg-black hover:text-white px-4 py-3 border-2 border-white transition-all duration-300"
           onClick={() => {
             document.getElementById("configurator")?.scrollIntoView({ behavior: "smooth" });
           }}

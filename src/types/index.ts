@@ -59,6 +59,7 @@ export interface Testimonial {
   name: string;
   location: string;
   image: string;
+  hasVideo?: boolean;
 }
 
 // Order Tracking type

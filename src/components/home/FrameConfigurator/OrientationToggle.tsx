@@ -13,15 +13,15 @@ export default function OrientationToggle({
   onChange,
 }: OrientationToggleProps) {
   return (
-    <div className="flex gap-0">
+    <div className="flex gap-1.5">
       <button
         onClick={() => onChange("portrait")}
         className={cn(
-          "flex-1 py-2 px-6 text-small rounded-button transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-primary",
+          "flex-1 py-1.5 text-[11px] transition-all duration-200",
+          "focus:outline-none border",
           orientation === "portrait"
-            ? "bg-primary text-white"
-            : "bg-white text-primary border border-border hover:bg-background-secondary"
+            ? "bg-primary text-white border-primary"
+            : "bg-white text-primary border-gray-200 hover:border-gray-400"
         )}
         aria-pressed={orientation === "portrait"}
       >
@@ -30,11 +30,11 @@ export default function OrientationToggle({
       <button
         onClick={() => onChange("landscape")}
         className={cn(
-          "flex-1 py-2 px-6 text-small rounded-button transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-primary",
+          "flex-1 py-1.5 text-[11px] transition-all duration-200",
+          "focus:outline-none border",
           orientation === "landscape"
-            ? "bg-primary text-white"
-            : "bg-white text-primary border border-border hover:bg-background-secondary"
+            ? "bg-primary text-white border-primary"
+            : "bg-white text-primary border-gray-200 hover:border-gray-400"
         )}
         aria-pressed={orientation === "landscape"}
       >

@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OAW - Custom Frames, Crafted for Your Moments",
+  title: "Our Art Works - Custom Frames, Crafted for Your Moments",
   description: "Premium handcrafted photo frames, customized to perfection. Made in India with love.",
-  keywords: ["photo frames", "custom frames", "handcrafted frames", "India", "OAW"],
-  authors: [{ name: "OAW" }],
+  keywords: ["photo frames", "custom frames", "handcrafted frames", "India", "Our Art Works"],
+  authors: [{ name: "Our Art Works" }],
+  icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
   openGraph: {
-    title: "OAW - Custom Frames, Crafted for Your Moments",
+    title: "Our Art Works - Custom Frames, Crafted for Your Moments",
     description: "Premium handcrafted photo frames, customized to perfection. Made in India with love.",
     type: "website",
     locale: "en_IN",

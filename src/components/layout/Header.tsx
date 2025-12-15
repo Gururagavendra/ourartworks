@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { ShoppingCart } from "lucide-react";
 import { getCart, Cart } from "@/services/cart";
@@ -53,11 +54,17 @@ export default function Header() {
         {/* Logo - appears on scroll */}
         <Link 
           href="/" 
-          className={`text-[22px] font-normal tracking-tight transition-opacity duration-300 ${
-            isScrolled ? "opacity-100 text-primary" : "opacity-0"
+          className={`transition-opacity duration-300 ${
+            isScrolled ? "opacity-100" : "opacity-0"
           }`}
         >
-          OAW
+          <Image 
+            src="/images/logo.svg" 
+            alt="Our Art Works" 
+            width={50} 
+            height={50}
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Cart Button */}

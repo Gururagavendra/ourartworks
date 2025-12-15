@@ -191,6 +191,8 @@ function CartItemCard({
               <p>Size: {frame.sizeName} ({frame.dimensions})</p>
               <p>Color: {frame.colorName}</p>
               <p>Orientation: {frame.orientation}</p>
+              {frame.beadSizeName && <p>Bead Size: {frame.beadSizeName}</p>}
+              {frame.borderThicknessName && <p>Border: {frame.borderThicknessName}</p>}
               {frame.isBulkOrder && (
                 <p className="text-accent">Bulk Order</p>
               )}

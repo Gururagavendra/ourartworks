@@ -16,7 +16,7 @@ export default function SizeSelector({
   onSelect,
 }: SizeSelectorProps) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-1.5">
       {sizes.map((size) => {
         const isSelected = selectedSize?.id === size.id;
         
@@ -25,29 +25,27 @@ export default function SizeSelector({
             key={size.id}
             onClick={() => onSelect(size)}
             className={cn(
-              "p-4 rounded-card text-left transition-all duration-200",
-              "border focus:outline-none focus:ring-2 focus:ring-primary",
+              "p-2 text-left transition-all duration-200",
+              "border focus:outline-none",
               isSelected
                 ? "bg-primary text-white border-primary"
-                : "bg-white text-primary border-border hover:border-primary"
+                : "bg-white text-primary border-gray-200 hover:border-gray-400"
             )}
             aria-pressed={isSelected}
           >
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-[16.5px] font-normal">{size.name}</span>
-              <span className={cn(
-                "text-small",
-                isSelected ? "text-white/80" : "text-text-light"
-              )}>
-                {size.width}×{size.height}&quot;
-              </span>
+            <div className="font-medium text-[12px] mb-0">{size.name}</div>
+            <div className={cn(
+              "text-[10px]",
+              isSelected ? "text-white/70" : "text-gray-500"
+            )}>
+              {size.width} × {size.height} in
             </div>
-            <span className={cn(
-              "text-[12px]",
+            <div className={cn(
+              "text-[11px] font-medium",
               isSelected ? "text-white" : "text-primary"
             )}>
               {formatPrice(size.price)}
-            </span>
+            </div>
           </button>
         );
       })}

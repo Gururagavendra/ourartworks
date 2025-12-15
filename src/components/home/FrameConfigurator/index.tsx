@@ -1,27 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Card from "@/components/ui/Card";
-import Button from "@/components/ui/Button";
 import Switch from "@/components/ui/Switch";
 import FramePreview from "./FramePreview";
 import ColorSelector from "./ColorSelector";
 import SizeSelector from "./SizeSelector";
 import OrientationToggle from "./OrientationToggle";
-import { FrameSize, FrameColor, Orientation } from "@/types";
+import BeadSizeSelector from "./BeadSizeSelector";
+import BorderThicknessSelector from "./BorderThicknessSelector";
+import { FrameSize, FrameColor, BeadSize, BorderThickness, Orientation } from "@/types";
 import { getFrameOptions } from "@/services/frames";
 import { addToCart } from "@/services/cart";
 import { formatPrice } from "@/utils/helpers";
-import { ShoppingCart, Ruler, Check, Loader2 } from "lucide-react";
+import { ShoppingCart, Info, Check, Loader2 } from "lucide-react";
 
 export default function FrameConfigurator() {
   // Frame options
   const [sizes, setSizes] = useState<FrameSize[]>([]);
   const [colors, setColors] = useState<FrameColor[]>([]);
+  const [beadSizes, setBeadSizes] = useState<BeadSize[]>([]);
+  const [borderThicknesses, setBorderThicknesses] = useState<BorderThickness[]>([]);
   
   // Selection state
   const [selectedSize, setSelectedSize] = useState<FrameSize | null>(null);
   const [selectedColor, setSelectedColor] = useState<FrameColor | null>(null);
+  const [selectedBeadSize, setSelectedBeadSize] = useState<BeadSize | null>(null);
+  const [selectedBorderThickness, setSelectedBorderThickness] = useState<BorderThickness | null>(null);
   const [orientation, setOrientation] = useState<Orientation>("portrait");
   const [isBulkOrder, setIsBulkOrder] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -31,26 +35,37 @@ export default function FrameConfigurator() {
   // Load data on mount
   useEffect(() => {
     const loadData = async () => {
-      // Fetch from WordPress API
-      const { sizes: frameSizes, colors: frameColors } = await getFrameOptions();
+      const options = await getFrameOptions();
       
-      setSizes(frameSizes);
-      setColors(frameColors);
+      setSizes(options.sizes);
+      setColors(options.colors);
+      setBeadSizes(options.beadSizes);
+      setBorderThicknesses(options.borderThicknesses);
       
       // Set defaults
-      if (frameSizes.length > 0) {
-        setSelectedSize(frameSizes[0]);
+      if (options.sizes.length > 0) {
+        setSelectedSize(options.sizes[0]);
       }
-      if (frameColors.length > 0) {
-        setSelectedColor(frameColors[0]);
+      if (options.colors.length > 0) {
+        setSelectedColor(options.colors[0]);
       }
+      // Set default bead size
+      const defaultBead = options.beadSizes.find(b => b.isDefault) || options.beadSizes[0];
+      if (defaultBead) setSelectedBeadSize(defaultBead);
+      
+      // Set default border thickness
+      const defaultBorder = options.borderThicknesses.find(b => b.isDefault) || options.borderThicknesses[0];
+      if (defaultBorder) setSelectedBorderThickness(defaultBorder);
     };
     
     loadData();
   }, []);
   
   // Calculate total price
-  const totalPrice = selectedSize?.price || 0;
+  const basePrice = selectedSize?.price || 0;
+  const beadAddon = selectedBeadSize?.priceAddon || 0;
+  const borderAddon = selectedBorderThickness?.priceAddon || 0;
+  const totalPrice = basePrice + beadAddon + borderAddon;
   
   // Handle add to cart
   const handleAddToCart = async () => {
@@ -66,23 +81,24 @@ export default function FrameConfigurator() {
       const result = await addToCart({
         sizeId: selectedSize.id,
         colorId: selectedColor.id,
+        beadSizeId: selectedBeadSize?.id || 0,
+        borderThicknessId: selectedBorderThickness?.id || 0,
         orientation,
         quantity: 1,
         uploadedImage,
         isBulkOrder,
-        price: selectedSize.price,
+        price: totalPrice,
         sizeName: selectedSize.name,
-        dimensions: `${selectedSize.width}x${selectedSize.height} ${selectedSize.unit}`,
+        dimensions: `${selectedSize.width} × ${selectedSize.height} in`,
         colorName: selectedColor.name,
         colorHex: selectedColor.hexCode,
+        beadSizeName: selectedBeadSize?.name || "",
+        borderThicknessName: selectedBorderThickness?.name || "",
       });
       
       if (result.success) {
         setAddedToCart(true);
-        // Reset after 2 seconds
         setTimeout(() => setAddedToCart(false), 2000);
-        
-        // Dispatch custom event for header cart update
         window.dispatchEvent(new CustomEvent('cart-updated', { detail: result.cart }));
       }
     } catch (error) {
@@ -94,39 +110,41 @@ export default function FrameConfigurator() {
   };
 
   return (
-    <section id="configurator" className="py-24 bg-[#fafafa]">
-      <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+    <section id="configurator" className="py-6 bg-white">
+      <div className="max-w-[800px] mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-[45px] leading-tight tracking-tight text-primary mb-3">
+        <div className="text-center mb-3">
+          <h2 className="text-[2.20rem] font-bold leading-tight text-primary mb-08">
             Customize Your Frame
           </h2>
-          <p className="text-[15px] text-text">
+          <p className="text-[11px] $404040">
             Create your perfect frame with our real-time configurator
           </p>
         </div>
         
         {/* Configurator */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-3 border border-gray-100">
           {/* Left - Preview */}
-          <Card variant="bordered" className="p-6">
+          <div className="bg-[#f8f8f8] p-2 flex items-center justify-center min-h-[220px]">
             <FramePreview
               selectedSize={selectedSize}
               selectedColor={selectedColor}
+              selectedBeadSize={selectedBeadSize}
+              selectedBorderThickness={selectedBorderThickness}
               orientation={orientation}
               uploadedImage={uploadedImage}
               onImageUpload={setUploadedImage}
             />
-          </Card>
+          </div>
           
           {/* Right - Options */}
-          <div className="space-y-6">
+          <div className="space-y-1.5 py-2 pr-2">
             {/* Frame Color */}
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-heading-3 text-primary">Frame Color</h3>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-[11px] font-semibold text-primary">Frame Color</h3>
                 {selectedColor && (
-                  <span className="text-small bg-border-light px-3 py-1 rounded-full">
+                  <span className="text-[10px] text-gray-400">
                     {selectedColor.name}
                   </span>
                 )}
@@ -140,10 +158,10 @@ export default function FrameConfigurator() {
             
             {/* Frame Size */}
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-heading-3 text-primary">Frame Size</h3>
-                <button className="flex items-center gap-1 text-small text-primary hover:underline">
-                  <Ruler size={12} />
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-[11px] font-semibold text-primary">Frame Size</h3>
+                <button className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-primary transition-colors">
+                  <Info size={10} />
                   Measurement Guide
                 </button>
               </div>
@@ -156,55 +174,73 @@ export default function FrameConfigurator() {
             
             {/* Orientation */}
             <div>
-              <h3 className="text-heading-3 text-primary mb-3">Orientation</h3>
+              <h3 className="text-[11px] font-semibold text-primary mb-1">Orientation</h3>
               <OrientationToggle
                 orientation={orientation}
                 onChange={setOrientation}
               />
             </div>
             
+            {/* Frame Bead Size */}
+            <div>
+              <h3 className="text-[11px] font-semibold text-primary mb-1">Frame Bead Size</h3>
+              <BeadSizeSelector
+                beadSizes={beadSizes}
+                selectedBeadSize={selectedBeadSize}
+                onSelect={setSelectedBeadSize}
+              />
+            </div>
+            
+            {/* Inner Border Thickness */}
+            <div>
+              <h3 className="text-[11px] font-semibold text-primary mb-1">Inner Border Thickness</h3>
+              <BorderThicknessSelector
+                borderThicknesses={borderThicknesses}
+                selectedBorderThickness={selectedBorderThickness}
+                onSelect={setSelectedBorderThickness}
+              />
+            </div>
+            
             {/* Bulk Order */}
-            <Card variant="bordered" className="p-4">
+            <div className="border border-gray-200 px-2 py-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-body-lg text-primary">Bulk Order</span>
+                <span className="text-[11px] font-semibold text-primary">Bulk Order</span>
                 <Switch
                   checked={isBulkOrder}
                   onChange={setIsBulkOrder}
                 />
               </div>
-            </Card>
+            </div>
             
             {/* Total & Add to Cart */}
-            <Card className="bg-primary text-white p-6">
-              <div className="mb-4">
-                <span className="text-small text-white/80">Total Price</span>
-                <p className="text-[26px] font-normal">{formatPrice(totalPrice)}</p>
+            <div className="bg-primary text-white p-3">
+              <div className="mb-1.5">
+                <span className="text-[10px] text-white/60">Total Price</span>
+                <p className="text-[20px] font-medium">{formatPrice(totalPrice)}</p>
               </div>
-              <Button
-                variant="secondary"
-                fullWidth
+              <button
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
-                className="bg-white text-primary hover:bg-white/90 disabled:opacity-70"
+                className="w-full bg-white text-primary py-2 font-medium text-[12px] flex items-center justify-center gap-2 hover:bg-gray-50 disabled:opacity-70 transition-colors"
               >
                 {isAddingToCart ? (
                   <>
-                    <Loader2 size={16} className="animate-spin" />
+                    <Loader2 size={14} className="animate-spin" />
                     Adding...
                   </>
                 ) : addedToCart ? (
                   <>
-                    <Check size={16} />
+                    <Check size={14} />
                     Added to Cart!
                   </>
                 ) : (
                   <>
-                    <ShoppingCart size={16} />
+                    <ShoppingCart size={14} />
                     Add to Cart
                   </>
                 )}
-              </Button>
-            </Card>
+              </button>
+            </div>
           </div>
         </div>
       </div>

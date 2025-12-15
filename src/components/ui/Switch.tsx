@@ -26,14 +26,14 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           disabled={disabled}
           onClick={() => !disabled && onChange(!checked)}
           className={cn(
-            "relative w-[33px] h-[18px] rounded-full transition-colors duration-200",
-            checked ? "bg-primary" : "bg-border"
+            "relative w-[44px] h-[24px] rounded-full transition-colors duration-200 border",
+            checked ? "bg-primary border-primary" : "bg-gray-100 border-gray-300"
           )}
         >
           <span
             className={cn(
-              "absolute top-[1.5px] w-[15px] h-[15px] bg-white rounded-full shadow-sm transition-transform duration-200",
-              checked ? "translate-x-[16px]" : "translate-x-[1.5px]"
+              "absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full shadow-sm transition-all duration-200",
+              checked ? "translate-x-[20px] bg-white" : "translate-x-0 bg-gray-400"
             )}
           />
         </button>

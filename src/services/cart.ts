@@ -12,6 +12,10 @@ export interface CartItem {
     colorId: number;
     colorName: string;
     colorHex: string;
+    beadSizeId: number;
+    beadSizeName: string;
+    borderThicknessId: number;
+    borderThicknessName: string;
     orientation: string;
     uploadedImage: string | null;
     isBulkOrder: boolean;
@@ -30,6 +34,8 @@ export interface Cart {
 export interface AddToCartParams {
   sizeId: number;
   colorId: number;
+  beadSizeId: number;
+  borderThicknessId: number;
   orientation: string;
   quantity?: number;
   uploadedImage?: string | null;
@@ -39,6 +45,8 @@ export interface AddToCartParams {
   dimensions: string;
   colorName: string;
   colorHex: string;
+  beadSizeName: string;
+  borderThicknessName: string;
 }
 
 const CART_STORAGE_KEY = "oaw_cart";
@@ -101,6 +109,8 @@ export async function addToCart(params: AddToCartParams): Promise<{ success: boo
     (item) =>
       item.frame?.sizeId === params.sizeId &&
       item.frame?.colorId === params.colorId &&
+      item.frame?.beadSizeId === params.beadSizeId &&
+      item.frame?.borderThicknessId === params.borderThicknessId &&
       item.frame?.orientation === params.orientation
   );
 
@@ -122,6 +132,10 @@ export async function addToCart(params: AddToCartParams): Promise<{ success: boo
         colorId: params.colorId,
         colorName: params.colorName,
         colorHex: params.colorHex,
+        beadSizeId: params.beadSizeId,
+        beadSizeName: params.beadSizeName,
+        borderThicknessId: params.borderThicknessId,
+        borderThicknessName: params.borderThicknessName,
         orientation: params.orientation,
         uploadedImage: params.uploadedImage || null,
         isBulkOrder: params.isBulkOrder || false,
