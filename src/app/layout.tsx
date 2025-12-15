@@ -8,10 +8,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Our Art Works" }],
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-black.svg", type: "image/svg+xml" },
       { url: "/icon.png", type: "image/png" },
     ],
-    shortcut: "/favicon.svg",
+    shortcut: "/favicon-black.svg",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
