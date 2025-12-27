@@ -27,7 +27,7 @@ export default function HeroSection() {
         </p>
         <Button 
           variant="secondary" 
-          size=""
+          size="lg"
           className="bg-white text-black font-semibold hover:bg-black hover:text-white px-4 py-3 border-2 border-white transition-all duration-300"
           onClick={() => {
             document.getElementById("configurator")?.scrollIntoView({ behavior: "smooth" });

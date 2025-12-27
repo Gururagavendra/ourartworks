@@ -20,10 +20,30 @@ export interface FrameColor {
   displayOrder: number;
 }
 
+// Bead Size type
+export interface BeadSize {
+  id: number;
+  name: string;
+  priceAddon: number;
+  isDefault: boolean;
+  displayOrder: number;
+}
+
+// Border Thickness type
+export interface BorderThickness {
+  id: number;
+  name: string;
+  priceAddon: number;
+  isDefault: boolean;
+  displayOrder: number;
+}
+
 // Frame Options (combined API response)
 export interface FrameOptions {
   sizes: FrameSize[];
   colors: FrameColor[];
+  beadSizes: BeadSize[];
+  borderThicknesses: BorderThickness[];
 }
 
 // Orientation type

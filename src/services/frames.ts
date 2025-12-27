@@ -70,8 +70,8 @@ export function getDefaultFrameColors(): FrameColor[] {
  */
 export function getDefaultBeadSizes(): BeadSize[] {
   return [
-    { id: 1, name: "1 inch", value: 1.0, unit: "inch", priceAddon: 0, isDefault: true, isActive: true, displayOrder: 1 },
-    { id: 2, name: "1.5 inch", value: 1.5, unit: "inch", priceAddon: 150, isDefault: false, isActive: true, displayOrder: 2 },
+    { id: 1, name: "1 inch", priceAddon: 0, isDefault: true, displayOrder: 1 },
+    { id: 2, name: "1.5 inch", priceAddon: 150, isDefault: false, displayOrder: 2 },
   ];
 }
 
@@ -80,8 +80,8 @@ export function getDefaultBeadSizes(): BeadSize[] {
  */
 export function getDefaultBorderThicknesses(): BorderThickness[] {
   return [
-    { id: 1, name: "0.5 inch", value: 0.5, unit: "inch", priceAddon: 0, isDefault: false, isActive: true, displayOrder: 1 },
-    { id: 2, name: "1 inch", value: 1.0, unit: "inch", priceAddon: 0, isDefault: true, isActive: true, displayOrder: 2 },
-    { id: 3, name: "1.5 inch", value: 1.5, unit: "inch", priceAddon: 0, isDefault: false, isActive: true, displayOrder: 3 },
+    { id: 1, name: "0.5 inch", priceAddon: 0, isDefault: false, displayOrder: 1 },
+    { id: 2, name: "1 inch", priceAddon: 0, isDefault: true, displayOrder: 2 },
+    { id: 3, name: "1.5 inch", priceAddon: 0, isDefault: false, displayOrder: 3 },
   ];
 }

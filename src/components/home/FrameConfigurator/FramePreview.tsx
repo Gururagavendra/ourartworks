@@ -126,21 +126,56 @@ export default function FramePreview({
         : { width: 90, height: 130 };
     }
     
-    const maxWidth = 130;
-    const maxHeight = 150;
+    // Base minimum dimensions (for smallest frame - 12x8)
+    // These represent the smaller and larger dimensions respectively
+    const minSmallerDim = 96;  // For the 8 inch dimension
+    const minLargerDim = 144;  // For the 12 inch dimension
     
-    let width = selectedSize.width;
-    let height = selectedSize.height;
+    // Maximum display dimensions
+    const maxWidth = 220;
+    const maxHeight = 260;
     
-    if (orientation === "landscape") {
-      [width, height] = [height, width];
+    // Scaling factor (pixels per inch) applied on top of minimum dimensions
+    const pixelsPerInch = 4;
+    
+    // Reference smallest frame dimensions (12x8)
+    const smallestFrameSmallerDim = 8;
+    const smallestFrameLargerDim = 12;
+    
+    // Get the smaller and larger dimensions from the frame size
+    const smallerDim = Math.min(selectedSize.width, selectedSize.height);
+    const largerDim = Math.max(selectedSize.width, selectedSize.height);
+    
+    // Calculate scale relative to smallest frame
+    const smallerScale = (smallerDim - smallestFrameSmallerDim) * pixelsPerInch;
+    const largerScale = (largerDim - smallestFrameLargerDim) * pixelsPerInch;
+    
+    // Calculate base dimensions with scaling
+    const baseSmaller = minSmallerDim + smallerScale;
+    const baseLarger = minLargerDim + largerScale;
+    
+    // For portrait: height > width, for landscape: width > height
+    let displayWidth: number;
+    let displayHeight: number;
+    
+    if (orientation === "portrait") {
+      displayWidth = baseSmaller;
+      displayHeight = baseLarger;
+    } else {
+      displayWidth = baseLarger;
+      displayHeight = baseSmaller;
     }
     
-    const scale = Math.min(maxWidth / width, maxHeight / height, 15);
+    // Cap at max dimensions if needed (for very large frames)
+    if (displayWidth > maxWidth || displayHeight > maxHeight) {
+      const capScale = Math.min(maxWidth / displayWidth, maxHeight / displayHeight);
+      displayWidth = displayWidth * capScale;
+      displayHeight = displayHeight * capScale;
+    }
     
     return {
-      width: Math.round(width * scale),
-      height: Math.round(height * scale),
+      width: Math.round(displayWidth),
+      height: Math.round(displayHeight),
     };
   };
   
@@ -152,7 +187,9 @@ export default function FramePreview({
     const match = selectedBeadSize.name.match(/(\d+\.?\d*)/);
     if (match) {
       const inches = parseFloat(match[1]);
-      return Math.round(inches * 14);
+      // Use a smaller multiplier for 1 inch to make it thinner
+      const multiplier = inches === 1 ? 5 : 4.8;
+      return Math.round(inches * multiplier);
     }
     return 16;
   };
